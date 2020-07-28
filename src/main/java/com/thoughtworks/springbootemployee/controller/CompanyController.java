@@ -57,8 +57,9 @@ public class CompanyController {
         return "success";
     }
 
-    @PutMapping
-    String updateCompany(@RequestBody Company newCompany) {
+    @PutMapping("/{id}")
+    String updateCompany(@RequestBody Company newCompany, @PathVariable("id") String id) {
+        newCompany.setId(id);
         Company oldCompany = this.companies.stream()
                 .filter(company -> company.getId().equals(newCompany.getId()))
                 .findFirst().orElse(null);
