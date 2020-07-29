@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/companies")
 public class CompanyController {
-    private List<Company> companies = new ArrayList<>();
+    private final List<Company> companies = new ArrayList<>();
 
     public CompanyController() {
         initCompanies();
@@ -77,10 +77,10 @@ public class CompanyController {
                 .filter(company -> company.getId().equals(id))
                 .findFirst()
                 .orElse(null);
-        if(foundCompany!=null){
+        if (foundCompany != null) {
             foundCompany.setEmployees(null);
             return "success";
-        }else {
+        } else {
             return "fail";
         }
     }
