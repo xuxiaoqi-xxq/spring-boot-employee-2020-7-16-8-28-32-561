@@ -17,4 +17,8 @@ public class CompanyRepository {
     public List<Employee> findEmployeesByCompanyID(String companyID) {
         return null;
     }
+
+    public List<Company> findCompaniesByPageAndPageSize(int page, int pageSize) {
+        return null;
+    }
 }

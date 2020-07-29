@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -56,5 +57,20 @@ public class CompanyServiceTest {
         List<Employee> employeesByCompanyID = companyService.findEmployeesByCompanyID("1");
         //then
         assertEquals(employees,employeesByCompanyID);
+    }
+
+    @Test
+    void should_get_page_companies_when_get_by_page_given_page_pageSize() {
+        //given
+        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository);
+        List<Company> companies = Arrays.asList(new Company(1, "OOCL", null),new Company(2, "OOCL", null));
+        given(companyRepository.findCompaniesByPageAndPageSize(1, 2)).willReturn(companies);
+
+        //when
+        List<Company> companiesByPageAndPageSize = companyService.findCompaniesByPageAndPageSize(1, 2);
+
+        //then
+        assertEquals(companies, companiesByPageAndPageSize);
     }
 }
