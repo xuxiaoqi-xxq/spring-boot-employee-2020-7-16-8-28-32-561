@@ -44,4 +44,8 @@ public class CompanyService {
         }
         return company;
     }
+
+    public void deleteCompanyByID(int companyID) {
+
+    }
 }

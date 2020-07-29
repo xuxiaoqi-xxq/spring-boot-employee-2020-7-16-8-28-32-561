@@ -107,5 +107,14 @@ public class CompanyServiceTest {
         assertNull(updatedCompany.getEmployees());
     }
 
-
+    @Test
+    void should_return_void_when_delete_given_company_id() {
+        //given
+        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository);
+        //when
+        companyService.deleteCompanyByID(1);
+        //then
+        Mockito.verify(companyRepository).deleteCompanyByID(1);
+    }
 }
