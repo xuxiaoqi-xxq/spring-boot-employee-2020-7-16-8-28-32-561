@@ -109,7 +109,6 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-//        given(employeeRepository.deleteEmployeeByID("1")).willReturn();
         //when
         employeeService.deleteEmployeeByID("1");
 

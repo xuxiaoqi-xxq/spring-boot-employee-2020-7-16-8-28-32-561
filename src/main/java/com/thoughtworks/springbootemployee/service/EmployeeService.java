@@ -43,6 +43,6 @@ public class EmployeeService {
     }
 
     public void deleteEmployeeByID(String employeeID) {
-
+        this.employeeRepository.deleteEmployeeByID(employeeID);
     }
 }
