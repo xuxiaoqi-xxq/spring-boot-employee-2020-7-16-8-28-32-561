@@ -18,15 +18,12 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        List<Employee> employees = Arrays.asList(new Employee("1", 18, "female", "eva", 1000),
-                new Employee("1", 18, "female", "eva", 1000));
-        given(employeeRepository.findAllEmployees()).willReturn(employees);
 
         //when
         List<Employee> foundEmployees = employeeService.findAll();
 
         //then
-        assertEquals(foundEmployees, employees);
+        assertEquals(foundEmployees, employeeRepository.findAllEmployees());
     }
 
     @Test
