@@ -23,14 +23,18 @@ public class EmployeeController {
         employees.add(new Employee("2", 24, "male", "java", 15000));
     }
 
-    @GetMapping
-    public List<Employee> getAllEmployees(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "pageSize", defaultValue = "0") int size, @RequestParam(value = "gender", defaultValue = "null") String gender) {
-        if (gender.equals("null")) {
-            if (page == 0 && size == 0) {
-                return this.employees;
-            }
-            return this.employees.subList((page - 1) * size, page * size);
-        }
+    @GetMapping()
+    public List<Employee> getAllEmployees() {
+        return this.employees;
+    }
+
+    @GetMapping(params = {"page", "pageSize"})
+    public List<Employee> getAllEmployeesByPageAndSize(int page, int size) {
+        return this.employees.subList((page - 1) * size, page * size);
+    }
+
+    @GetMapping(params = {"gender"})
+    public List<Employee> getAllEmployeesByGender(String gender) {
         return this.employees.stream()
                 .filter(employee -> employee.getGender().equals(gender))
                 .collect(Collectors.toList());
@@ -56,6 +60,7 @@ public class EmployeeController {
         Employee oldEmployee = this.employees.stream()
                 .filter(employee -> employee.getId().equals(newEmployee.getId()))
                 .findFirst().orElse(null);
+        //todo
         if (oldEmployee == null) {
             return "fail";
         }
@@ -70,6 +75,7 @@ public class EmployeeController {
                 .filter(company -> company.getId().equals(id))
                 .findFirst()
                 .orElse(null);
+        //todo
         if (foundEmployee != null) {
             this.employees.remove(foundEmployee);
             return "success";
