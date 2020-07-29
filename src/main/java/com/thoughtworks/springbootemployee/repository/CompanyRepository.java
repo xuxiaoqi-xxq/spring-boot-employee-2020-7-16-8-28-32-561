@@ -8,4 +8,8 @@ public class CompanyRepository {
     public List<Company> findAllCompanies() {
         return null;
     }
+
+    public Company findCompanyByID(String companyID) {
+        return null;
+    }
 }

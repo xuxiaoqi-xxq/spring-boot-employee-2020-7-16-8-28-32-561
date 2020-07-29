@@ -17,4 +17,8 @@ public class CompanyService {
     public List<Company> findAllCompanies() {
         return this.companyRepository.findAllCompanies();
     }
+
+    public Company findCompanyByID(String companyID) {
+        return null;
+    }
 }

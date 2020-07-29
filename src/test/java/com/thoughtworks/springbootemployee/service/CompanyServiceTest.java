@@ -27,4 +27,17 @@ public class CompanyServiceTest {
         //then
         assertEquals(companies, allCompanies);
     }
+
+    @Test
+    void should_return_specific_company_when_find_by_id_given_id() {
+        //given
+        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository);
+        Company ooclCompany = new Company("1", "OOCL", null);
+        given(companyRepository.findCompanyByID("1")).willReturn(ooclCompany);
+        //when
+        Company company = companyService.findCompanyByID("1");
+        //then
+        assertEquals(ooclCompany,company);
+    }
 }
