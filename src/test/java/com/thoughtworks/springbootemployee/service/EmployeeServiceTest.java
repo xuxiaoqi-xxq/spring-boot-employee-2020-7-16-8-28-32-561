@@ -31,16 +31,17 @@ public class EmployeeServiceTest {
     @Test
     void should_get_page_employees_when_get_by_page_given_page_pageSize() {
         //given
-        EmployeeRepository employeeRepository = new EmployeeRepository();
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-//        List<Employee> employees = Arrays.asList(new Employee("1", 18, "female", "eva", 1000),
-//                new Employee("2", 19, "male", "eva", 1000));
-//        given(employeeRepository.findEmployeesByPageAndPageSize(1,2)).willReturn(employees);
+        List<Employee> employees = Arrays.asList(new Employee("1", 18, "female", "eva", 1000),
+                new Employee("2", 19, "male", "eva", 1000));
+        given(employeeRepository.findEmployeesByPageAndPageSize(1,2)).willReturn(employees);
+
         //when
         List<Employee> employeesByPageAndPageSize = employeeService.findEmployeesByPageAndPageSize(1, 2);
 
         //then
-        assertEquals(employeeRepository, employeesByPageAndPageSize);
+        assertEquals(employeesByPageAndPageSize,employees);
     }
 
     @Test
