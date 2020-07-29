@@ -1,86 +1,59 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.service.EmployeeService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private final List<Employee> employees = new ArrayList<>();
+    private final EmployeeService employeeService ;
 
-    public EmployeeController() {
-        initEmployees();
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService=employeeService;
     }
 
-    private void initEmployees() {
-        employees.add(new Employee(1, 18, "female", "eva", 10000));
-        employees.add(new Employee(3, 24, "male", "gradle", 12000));
-        employees.add(new Employee(2, 24, "male", "java", 15000));
-    }
 
     @GetMapping()
     public List<Employee> getAllEmployees() {
-        return this.employees;
+        return this.employeeService.findAll();
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<Employee> getAllEmployeesByPageAndSize(int page, int size) {
-        return this.employees.subList((page - 1) * size, page * size);
+    public Page<Employee> getAllEmployeesByPageAndSize(Integer page, Integer pageSize) {
+        return this.employeeService.findEmployeesByPageAndPageSize(++page,pageSize);
     }
 
     @GetMapping(params = {"gender"})
     public List<Employee> getAllEmployeesByGender(String gender) {
-        return this.employees.stream()
-                .filter(employee -> employee.getGender().equals(gender))
-                .collect(Collectors.toList());
+        return this.employeeService.findEmployeesByGender(gender);
     }
 
     @GetMapping("/{id}")
     public Employee getEmployee(@PathVariable("id") Integer id) {
-        return this.employees.stream()
-                .filter(employee -> employee.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        return this.employeeService.findEmployeeByID(id);
     }
 
     @PostMapping
-    //todo rename
-    Employee addCompany(@RequestBody Employee employee) {
-        this.employees.add(employee);
-        return employee;
+
+    Employee addEmployee(@RequestBody Employee employee) {
+        return this.employeeService.addEmployee(employee);
     }
 
     @PutMapping("/{id}")
-    String updateCompany(@RequestBody Employee newEmployee, @PathVariable("id") Integer id) {
-        newEmployee.setId(id);
-        Employee oldEmployee = this.employees.stream()
-                .filter(employee -> employee.getId().equals(newEmployee.getId()))
-                .findFirst().orElse(null);
-        if (oldEmployee == null) {
-            return "fail";
-        }
-        this.employees.remove(oldEmployee);
-        this.employees.add(newEmployee);
-        return "success";
+    Employee updateEmployee(@RequestBody Employee newEmployee, @PathVariable("id") Integer id) {
+        return this.employeeService.update(id,newEmployee);
     }
 
     @DeleteMapping("/{id}")
-    String deleteCompany(@PathVariable("id") Integer id) {
-        Employee foundEmployee = this.employees.stream()
-                .filter(company -> company.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-        if (foundEmployee != null) {
-            this.employees.remove(foundEmployee);
-            return "success";
-        } else {
-            return "fail";
-        }
+    void deleteEmployee(@PathVariable("id") Integer id) {
+        this.employeeService.deleteEmployeeByID(id);
     }
 
 }
