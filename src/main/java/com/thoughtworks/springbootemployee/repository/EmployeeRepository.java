@@ -35,4 +35,8 @@ public class EmployeeRepository {
     public Employee addEmployee(Employee employee) {
         return null;
     }
+
+    public void deleteEmployeeByID(String employeeID) {
+
+    }
 }

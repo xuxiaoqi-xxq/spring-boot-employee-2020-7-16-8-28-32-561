@@ -104,5 +104,16 @@ public class EmployeeServiceTest {
         assertEquals(1000, employee.getSalary());
     }
 
+    @Test
+    void should_return_void_when_delete_given_employee_id() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+//        given(employeeRepository.deleteEmployeeByID("1")).willReturn();
+        //when
+        employeeService.deleteEmployeeByID("1");
 
+        //then
+        Mockito.verify(employeeRepository).deleteEmployeeByID("1");
+    }
 }

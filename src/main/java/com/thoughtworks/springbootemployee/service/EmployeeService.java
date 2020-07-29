@@ -41,4 +41,8 @@ public class EmployeeService {
     public Employee addEmployee(Employee employee) {
         return this.employeeRepository.addEmployee(employee);
     }
+
+    public void deleteEmployeeByID(String employeeID) {
+
+    }
 }
