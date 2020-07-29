@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +20,7 @@ public class CompanyServiceTest {
         //given
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
         CompanyService companyService = new CompanyService(companyRepository);
-        List<Company> companies = Arrays.asList(new Company("1", "OOCL", null));
+        List<Company> companies = Arrays.asList(new Company(1, "OOCL", null));
         given(companyRepository.findAllCompanies()).willReturn(companies);
 
         //when
@@ -34,7 +35,7 @@ public class CompanyServiceTest {
         //given
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
         CompanyService companyService = new CompanyService(companyRepository);
-        Company ooclCompany = new Company("1", "OOCL", null);
+        Company ooclCompany = new Company(1, "OOCL", null);
         given(companyRepository.findCompanyByID("1")).willReturn(ooclCompany);
         //when
         Company company = companyService.findCompanyByID("1");
@@ -47,9 +48,9 @@ public class CompanyServiceTest {
         //given
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
         CompanyService companyService = new CompanyService(companyRepository);
-        List<Employee> employees = Arrays.asList(new Employee("1", 18, "female", "eva", 1000),
-                new Employee("2", 19, "female", "eva", 1000));
-        List<Company> companies = Arrays.asList(new Company("1", "OOCL", employees));
+        List<Employee> employees = Arrays.asList(new Employee(1, 18, "female", "eva", 1000),
+                new Employee(2, 19, "female", "eva", 1000));
+        List<Company> companies = Collections.singletonList(new Company(1, "OOCL", employees));
         given(companyRepository.findEmployeesByCompanyID("1")).willReturn(employees);
         //when
         List<Employee> employeesByCompanyID = companyService.findEmployeesByCompanyID("1");

@@ -18,8 +18,8 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        List<Employee> employees = Arrays.asList(new Employee("1", 18, "female", "eva", 10000),
-                new Employee("3", 24, "male", "gradle", 12000));
+        List<Employee> employees = Arrays.asList(new Employee(1, 18, "female", "eva", 10000),
+                new Employee(3, 24, "male", "gradle", 12000));
         given(employeeRepository.findAllEmployees()).willReturn(employees);
         //when
         List<Employee> foundEmployees = employeeService.findAll();
@@ -33,8 +33,8 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        List<Employee> employees = Arrays.asList(new Employee("1", 18, "female", "eva", 1000),
-                new Employee("2", 19, "male", "eva", 1000));
+        List<Employee> employees = Arrays.asList(new Employee(1, 18, "female", "eva", 1000),
+                new Employee(1, 19, "male", "eva", 1000));
         given(employeeRepository.findEmployeesByPageAndPageSize(1, 2)).willReturn(employees);
 
         //when
@@ -49,8 +49,8 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        List<Employee> employees = Arrays.asList(new Employee("1", 18, "female", "eva", 1000),
-                new Employee("2", 19, "female", "eva", 1000));
+        List<Employee> employees = Arrays.asList(new Employee(1, 18, "female", "eva", 1000),
+                new Employee(2, 19, "female", "eva", 1000));
         given(employeeRepository.findEmployeesByGender("female")).willReturn(employees);
         //when
         List<Employee> employeesByGender = employeeService.findEmployeesByGender("female");
@@ -63,7 +63,7 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        Employee employee = new Employee("2", 19, "female", "eva", 1000);
+        Employee employee = new Employee(2, 19, "female", "eva", 1000);
         given(employeeRepository.findEmployeeByID("2")).willReturn(employee);
         //when
         Employee employeeByID = employeeService.findEmployeeByID("2");
@@ -76,7 +76,7 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        Employee employee = new Employee("2", 19, "female", "eva", 1000);
+        Employee employee = new Employee(2, 19, "female", "eva", 1000);
         given(employeeRepository.addEmployee(employee)).willReturn(employee);
 
         //when
@@ -91,14 +91,14 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        given(employeeRepository.findEmployeeByID("1")).willReturn(new Employee("1", 18, "female", "chris", 9999));
+        given(employeeRepository.findEmployeeByID("1")).willReturn(new Employee(2, 18, "female", "chris", 9999));
 
         //when
-        Employee updatedEmployee = new Employee("1", 18, "female", "eva", 1000);
+        Employee updatedEmployee = new Employee(2, 18, "female", "eva", 1000);
         Employee employee = employeeService.update("1", updatedEmployee);
 
         //then
-        assertEquals("1", employee.getId());
+        assertEquals(2, employee.getId());
         assertEquals("eva", employee.getName());
         assertEquals("female", employee.getGender());
         assertEquals(1000, employee.getSalary());

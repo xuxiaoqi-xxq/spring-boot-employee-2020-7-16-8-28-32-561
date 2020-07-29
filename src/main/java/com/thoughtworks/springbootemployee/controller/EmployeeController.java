@@ -18,9 +18,9 @@ public class EmployeeController {
     }
 
     private void initEmployees() {
-        employees.add(new Employee("1", 18, "female", "eva", 10000));
-        employees.add(new Employee("3", 24, "male", "gradle", 12000));
-        employees.add(new Employee("2", 24, "male", "java", 15000));
+        employees.add(new Employee(1, 18, "female", "eva", 10000));
+        employees.add(new Employee(3, 24, "male", "gradle", 12000));
+        employees.add(new Employee(2, 24, "male", "java", 15000));
     }
 
     @GetMapping()
@@ -41,7 +41,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployee(@PathVariable("id") String id) {
+    public Employee getEmployee(@PathVariable("id") Integer id) {
         return this.employees.stream()
                 .filter(employee -> employee.getId().equals(id))
                 .findFirst()
@@ -56,7 +56,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    String updateCompany(@RequestBody Employee newEmployee, @PathVariable("id") String id) {
+    String updateCompany(@RequestBody Employee newEmployee, @PathVariable("id") Integer id) {
         newEmployee.setId(id);
         Employee oldEmployee = this.employees.stream()
                 .filter(employee -> employee.getId().equals(newEmployee.getId()))
@@ -70,7 +70,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    String deleteCompany(@PathVariable("id") String id) {
+    String deleteCompany(@PathVariable("id") Integer id) {
         Employee foundEmployee = this.employees.stream()
                 .filter(company -> company.getId().equals(id))
                 .findFirst()

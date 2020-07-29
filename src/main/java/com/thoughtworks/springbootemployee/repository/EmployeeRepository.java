@@ -11,8 +11,8 @@ public class EmployeeRepository {
     private final List<Employee> employees = new ArrayList<>();
 
     public EmployeeRepository() {
-        employees.add(new Employee("1", 18, "female", "eva", 10000));
-        employees.add(new Employee("3", 24, "male", "gradle", 12000));
+        employees.add(new Employee(1, 18, "female", "eva", 10000));
+        employees.add(new Employee(3, 24, "male", "gradle", 12000));
     }
 
     public List<Employee> findAllEmployees() {

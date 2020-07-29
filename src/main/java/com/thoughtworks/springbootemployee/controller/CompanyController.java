@@ -19,11 +19,11 @@ public class CompanyController {
     }
 
     private void initCompanies() {
-        Employee employee1 = new Employee("1", 18, "female", "eva", 10000);
-        Employee employee2 = new Employee("2", 24, "male", "java", 15000);
-        Employee employee3 = new Employee("3", 24, "male", "gradle", 12000);
-        companies.add(new Company("1", "OOCL", Collections.singletonList(employee1)));
-        companies.add(new Company("2", "ThoughtWorks", Arrays.asList(employee2, employee3)));
+        Employee employee1 = new Employee(1, 18, "female", "eva", 10000);
+        Employee employee2 = new Employee(2, 24, "male", "java", 15000);
+        Employee employee3 = new Employee(3, 24, "male", "gradle", 12000);
+        companies.add(new Company(1, "OOCL", Collections.singletonList(employee1)));
+        companies.add(new Company(2, "ThoughtWorks", Arrays.asList(employee2, employee3)));
     }
 
     @GetMapping()
@@ -32,7 +32,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    Company getCompanyById(@PathVariable("id") String id) {
+    Company getCompanyById(@PathVariable("id") Integer id) {
         return companies.stream()
                 .filter(company -> company.getId().equals(id))
                 .findFirst()
@@ -40,7 +40,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}/employees")
-    List<Employee> getEmployeesByCompanyId(@PathVariable("id") String id) {
+    List<Employee> getEmployeesByCompanyId(@PathVariable("id") Integer id) {
         return companies.stream()
                 .filter(company -> company.getId().equals(id))
                 .map(Company::getEmployees)
@@ -61,7 +61,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    String updateCompany(@RequestBody Company newCompany, @PathVariable("id") String id) {
+    String updateCompany(@RequestBody Company newCompany, @PathVariable("id") Integer id) {
         newCompany.setId(id);
         Company oldCompany = this.companies.stream()
                 .filter(company -> company.getId().equals(newCompany.getId()))
@@ -75,7 +75,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
-    String deleteCompany(@PathVariable("id") String id) {
+    String deleteCompany(@PathVariable("id") Integer id) {
         Company foundCompany = this.companies.stream()
                 .filter(company -> company.getId().equals(id))
                 .findFirst()
