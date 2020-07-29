@@ -37,4 +37,8 @@ public class EmployeeService {
     public Employee findEmployeeByID(String employeeID) {
         return this.employeeRepository.findEmployeeByID(employeeID);
     }
+
+    public Employee addEmployee(Employee employee) {
+        return null;
+    }
 }

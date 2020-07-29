@@ -25,7 +25,7 @@ public class EmployeeServiceTest {
         List<Employee> foundEmployees = employeeService.findAll();
 
         //then
-        assertEquals(employees,foundEmployees);
+        assertEquals(employees, foundEmployees);
     }
 
     @Test
@@ -35,13 +35,13 @@ public class EmployeeServiceTest {
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         List<Employee> employees = Arrays.asList(new Employee("1", 18, "female", "eva", 1000),
                 new Employee("2", 19, "male", "eva", 1000));
-        given(employeeRepository.findEmployeesByPageAndPageSize(1,2)).willReturn(employees);
+        given(employeeRepository.findEmployeesByPageAndPageSize(1, 2)).willReturn(employees);
 
         //when
         List<Employee> employeesByPageAndPageSize = employeeService.findEmployeesByPageAndPageSize(1, 2);
 
         //then
-        assertEquals(employees,employeesByPageAndPageSize);
+        assertEquals(employees, employeesByPageAndPageSize);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class EmployeeServiceTest {
         //when
         List<Employee> employeesByGender = employeeService.findEmployeesByGender("female");
         //then
-        assertEquals(employees,employeesByGender);
+        assertEquals(employees, employeesByGender);
     }
 
     @Test
@@ -68,7 +68,22 @@ public class EmployeeServiceTest {
         //when
         Employee employeeByID = employeeService.findEmployeeByID("2");
         //then
-        assertEquals(employee,employeeByID);
+        assertEquals(employee, employeeByID);
+    }
+
+    @Test
+    void should_return_created_employee_when_add_given_employee() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        Employee employee = new Employee("2", 19, "female", "eva", 1000);
+        given(employeeRepository.addEmployee(employee)).willReturn(employee);
+
+        //when
+        Employee createdEmployee = employeeService.addEmployee(employee);
+
+        //then
+        assertEquals(employee, createdEmployee);
     }
 
     @Test

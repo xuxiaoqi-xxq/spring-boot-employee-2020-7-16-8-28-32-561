@@ -31,4 +31,8 @@ public class EmployeeRepository {
     public List<Employee> findEmployeesByGender(String gender) {
         return null;
     }
+
+    public Employee addEmployee(Employee employee) {
+        return null;
+    }
 }

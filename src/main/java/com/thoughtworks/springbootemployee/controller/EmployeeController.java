@@ -49,6 +49,7 @@ public class EmployeeController {
     }
 
     @PostMapping
+    //todo rename
     Employee addCompany(@RequestBody Employee employee) {
         this.employees.add(employee);
         return employee;
