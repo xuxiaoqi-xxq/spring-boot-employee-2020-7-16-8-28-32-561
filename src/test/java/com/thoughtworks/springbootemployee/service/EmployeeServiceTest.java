@@ -45,6 +45,20 @@ public class EmployeeServiceTest {
     }
 
     @Test
+    void should_return_gender_employees_when_find_by_gender_given_gender() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        List<Employee> employees = Arrays.asList(new Employee("1", 18, "female", "eva", 1000),
+                new Employee("2", 19, "female", "eva", 1000));
+        given(employeeRepository.findEmployeesByGender("female")).willReturn(employees);
+        //when
+        List<Employee> employeesByGender = employeeService.findEmployeesByGender("female");
+        //then
+        assertEquals(employeesByGender,employees);
+    }
+
+    @Test
     void should_update_employee_when_update_given_employee() {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
@@ -61,4 +75,6 @@ public class EmployeeServiceTest {
         assertEquals("female", employee.getGender());
         assertEquals(1000, employee.getSalary());
     }
+
+
 }

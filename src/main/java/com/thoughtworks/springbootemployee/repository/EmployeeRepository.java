@@ -27,4 +27,8 @@ public class EmployeeRepository {
     public List<Employee> findEmployeesByPageAndPageSize(int page, int pageSize) {
         return this.employees.subList((page - 1) * pageSize, page * pageSize);
     }
+
+    public List<Employee> findEmployeesByGender(String gender) {
+        return null;
+    }
 }
