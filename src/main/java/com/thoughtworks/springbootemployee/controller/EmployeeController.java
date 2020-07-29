@@ -49,9 +49,9 @@ public class EmployeeController {
     }
 
     @PostMapping
-    String addCompany(@RequestBody Employee employee) {
+    Employee addCompany(@RequestBody Employee employee) {
         this.employees.add(employee);
-        return "success";
+        return employee;
     }
 
     @PutMapping("/{id}")
