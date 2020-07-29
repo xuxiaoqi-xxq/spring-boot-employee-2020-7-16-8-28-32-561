@@ -1,20 +1,17 @@
 package com.thoughtworks.springbootemployee.controller;
 
-
-import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private List<Employee> employees = new ArrayList<>();
+    private final List<Employee> employees = new ArrayList<>();
 
     public EmployeeController() {
         initEmployees();
@@ -27,7 +24,7 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getAllEmployees(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "pageSize", defaultValue = "0") int size, @RequestParam(value ="gender", defaultValue = "null") String gender) {
+    public List<Employee> getAllEmployees(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "pageSize", defaultValue = "0") int size, @RequestParam(value = "gender", defaultValue = "null") String gender) {
         if (gender.equals("null")) {
             if (page == 0 && size == 0) {
                 return this.employees;
