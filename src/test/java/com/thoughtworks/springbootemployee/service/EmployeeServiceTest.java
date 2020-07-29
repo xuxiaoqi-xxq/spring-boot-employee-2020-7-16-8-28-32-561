@@ -4,6 +4,8 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +22,7 @@ public class EmployeeServiceTest {
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         List<Employee> employees = Arrays.asList(new Employee(1, 18, "female", "eva", 10000),
                 new Employee(3, 24, "male", "gradle", 12000));
-        given(employeeRepository.findAllEmployees()).willReturn(employees);
+        given(employeeRepository.findAll()).willReturn(employees);
         //when
         List<Employee> foundEmployees = employeeService.findAll();
 
@@ -35,10 +37,10 @@ public class EmployeeServiceTest {
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         List<Employee> employees = Arrays.asList(new Employee(1, 18, "female", "eva", 1000),
                 new Employee(1, 19, "male", "eva", 1000));
-        given(employeeRepository.findEmployeesByPageAndPageSize(1, 2)).willReturn(employees);
+        given(employeeRepository.findAll(PageRequest.of(1,2))).willReturn((Page<Employee>) employees);
 
         //when
-        List<Employee> employeesByPageAndPageSize = employeeService.findEmployeesByPageAndPageSize(1, 2);
+        Page<Employee> employeesByPageAndPageSize = employeeService.findEmployeesByPageAndPageSize(1, 2);
 
         //then
         assertEquals(employees, employeesByPageAndPageSize);
@@ -51,7 +53,7 @@ public class EmployeeServiceTest {
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         List<Employee> employees = Arrays.asList(new Employee(1, 18, "female", "eva", 1000),
                 new Employee(2, 19, "female", "eva", 1000));
-        given(employeeRepository.findEmployeesByGender("female")).willReturn(employees);
+        given(employeeRepository.findAllByGender("female")).willReturn(employees);
         //when
         List<Employee> employeesByGender = employeeService.findEmployeesByGender("female");
         //then
@@ -64,9 +66,9 @@ public class EmployeeServiceTest {
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         Employee employee = new Employee(2, 19, "female", "eva", 1000);
-        given(employeeRepository.findEmployeeByID("2")).willReturn(employee);
+        given(employeeRepository.findById(2).orElse(null)).willReturn(employee);
         //when
-        Employee employeeByID = employeeService.findEmployeeByID("2");
+        Employee employeeByID = employeeService.findEmployeeByID(2);
         //then
         assertEquals(employee, employeeByID);
     }
@@ -77,7 +79,7 @@ public class EmployeeServiceTest {
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         Employee employee = new Employee(2, 19, "female", "eva", 1000);
-        given(employeeRepository.addEmployee(employee)).willReturn(employee);
+        given(employeeRepository.save(employee)).willReturn(employee);
 
         //when
         Employee createdEmployee = employeeService.addEmployee(employee);
@@ -91,11 +93,11 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        given(employeeRepository.findEmployeeByID("1")).willReturn(new Employee(2, 18, "female", "chris", 9999));
+        given(employeeRepository.findById(1).orElse(null)).willReturn(new Employee(2, 18, "female", "chris", 9999));
 
         //when
         Employee updatedEmployee = new Employee(2, 18, "female", "eva", 1000);
-        Employee employee = employeeService.update("1", updatedEmployee);
+        Employee employee = employeeService.update(1, updatedEmployee);
 
         //then
         assertEquals(2, employee.getId());
@@ -110,9 +112,9 @@ public class EmployeeServiceTest {
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         //when
-        employeeService.deleteEmployeeByID("1");
+        employeeService.deleteEmployeeByID(1);
 
         //then
-        Mockito.verify(employeeRepository).deleteEmployeeByID("1");
+        Mockito.verify(employeeRepository).deleteById(1);
     }
 }

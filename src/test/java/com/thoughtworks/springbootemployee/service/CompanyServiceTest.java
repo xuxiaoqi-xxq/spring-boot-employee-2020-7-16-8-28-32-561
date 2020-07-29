@@ -6,10 +6,13 @@ import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -22,8 +25,8 @@ public class CompanyServiceTest {
         //given
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
         CompanyService companyService = new CompanyService(companyRepository);
-        List<Company> companies = Arrays.asList(new Company(1, "OOCL", null));
-        given(companyRepository.findAllCompanies()).willReturn(companies);
+        List<Company> companies = Collections.singletonList(new Company(1, "OOCL", null));
+        given(companyRepository.findAll()).willReturn(companies);
 
         //when
         List<Company> allCompanies = companyService.findAllCompanies();
@@ -38,7 +41,7 @@ public class CompanyServiceTest {
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
         CompanyService companyService = new CompanyService(companyRepository);
         Company ooclCompany = new Company(1, "OOCL", null);
-        given(companyRepository.findCompanyByID(1)).willReturn(ooclCompany);
+        given(companyRepository.findById(1)).willReturn(Optional.of(ooclCompany));
         //when
         Company company = companyService.findCompanyByID(1);
         //then
@@ -52,10 +55,10 @@ public class CompanyServiceTest {
         CompanyService companyService = new CompanyService(companyRepository);
         List<Employee> employees = Arrays.asList(new Employee(1, 18, "female", "eva", 1000),
                 new Employee(2, 19, "female", "eva", 1000));
-        List<Company> companies = Collections.singletonList(new Company(1, "OOCL", employees));
-        given(companyRepository.findEmployeesByCompanyID("1")).willReturn(employees);
+        Company company = new Company(1, "OOCL", employees);
+        given(companyRepository.findById(1)).willReturn(Optional.of(company));
         //when
-        List<Employee> employeesByCompanyID = companyService.findEmployeesByCompanyID("1");
+        List<Employee> employeesByCompanyID = companyService.findEmployeesByCompanyID(1);
         //then
         assertEquals(employees,employeesByCompanyID);
     }
@@ -66,10 +69,10 @@ public class CompanyServiceTest {
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
         CompanyService companyService = new CompanyService(companyRepository);
         List<Company> companies = Arrays.asList(new Company(1, "OOCL", null),new Company(2, "OOCL", null));
-        given(companyRepository.findCompaniesByPageAndPageSize(1, 2)).willReturn(companies);
+        given(companyRepository.findAll(PageRequest.of(1,2))).willReturn((Page<Company>) companies);
 
         //when
-        List<Company> companiesByPageAndPageSize = companyService.findCompaniesByPageAndPageSize(1, 2);
+        Page<Company> companiesByPageAndPageSize = companyService.findCompaniesByPageAndPageSize(1, 2);
 
         //then
         assertEquals(companies, companiesByPageAndPageSize);
@@ -81,7 +84,7 @@ public class CompanyServiceTest {
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
         CompanyService companyService = new CompanyService(companyRepository);
         Company company = new Company(1, "OOCL", null);
-        given(companyRepository.addCompany(company)).willReturn(company);
+        given(companyRepository.save(company)).willReturn(company);
 
         //when
         Company createdCompany = companyService.addCompany(company);
@@ -95,7 +98,7 @@ public class CompanyServiceTest {
         //given
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
         CompanyService companyService = new CompanyService(companyRepository);
-        given(companyRepository.findCompanyByID(1)).willReturn(new Company(1, "OOCL", null));
+        given(companyRepository.findById(1)).willReturn(Optional.of(new Company(1, "OOCL", null)));
         Company company = new Company(1, "CargoSmart", null);
 
         //when
@@ -115,6 +118,6 @@ public class CompanyServiceTest {
         //when
         companyService.deleteCompanyByID(1);
         //then
-        Mockito.verify(companyRepository).deleteCompanyByID(1);
+        Mockito.verify(companyRepository).deleteById(1);
     }
 }

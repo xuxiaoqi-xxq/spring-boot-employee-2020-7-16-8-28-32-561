@@ -2,6 +2,8 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -13,36 +15,37 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public Employee update(String employeeID, Employee updatedEmployee) {
-        Employee employee = employeeRepository.findEmployeeByID(employeeID);
+    public Employee update(Integer employeeID, Employee updatedEmployee) {
+        Employee employee = employeeRepository.findById(employeeID).orElse(null);
         employee.setName(updatedEmployee.getName());
         employee.setAge(updatedEmployee.getAge());
         employee.setGender(updatedEmployee.getGender());
         employee.setSalary(updatedEmployee.getSalary());
+        this.employeeRepository.save(employee);
         return employee;
     }
 
     public List<Employee> findAll() {
-        return this.employeeRepository.findAllEmployees();
+        return this.employeeRepository.findAll();
     }
 
-    public List<Employee> findEmployeesByPageAndPageSize(int page, int pageSize) {
-        return this.employeeRepository.findEmployeesByPageAndPageSize(page, pageSize);
+    public Page<Employee> findEmployeesByPageAndPageSize(int page, int pageSize) {
+        return this.employeeRepository.findAll(PageRequest.of(page,pageSize));
     }
 
     public List<Employee> findEmployeesByGender(String gender) {
-        return this.employeeRepository.findEmployeesByGender(gender);
+        return this.employeeRepository.findAllByGender(gender);
     }
 
-    public Employee findEmployeeByID(String employeeID) {
-        return this.employeeRepository.findEmployeeByID(employeeID);
+    public Employee findEmployeeByID(Integer employeeID) {
+        return this.employeeRepository.findById(employeeID).orElse(null);
     }
 
     public Employee addEmployee(Employee employee) {
-        return this.employeeRepository.addEmployee(employee);
+        return this.employeeRepository.save(employee);
     }
 
-    public void deleteEmployeeByID(String employeeID) {
-        this.employeeRepository.deleteEmployeeByID(employeeID);
+    public void deleteEmployeeByID(Integer employeeID) {
+        this.employeeRepository.deleteById(employeeID);
     }
 }
