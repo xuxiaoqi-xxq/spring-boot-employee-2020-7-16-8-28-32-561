@@ -26,6 +26,11 @@ public class CompanyController {
         companies.add(new Company("2", "ThoughtWorks", Arrays.asList(employee2, employee3)));
     }
 
+    @GetMapping()
+    List<Company> getCompanies() {
+        return this.companies;
+    }
+
     @GetMapping("/{id}")
     Company getCompanyById(@PathVariable("id") String id) {
         return companies.stream()
@@ -40,15 +45,13 @@ public class CompanyController {
                 .filter(company -> company.getId().equals(id))
                 .map(Company::getEmployees)
                 .findFirst()
+                //todo
                 .orElse(null);
     }
 
-    @GetMapping
-    List<Company> getCompaniesByPageAndSize(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "pageSize", defaultValue = "0") int size) {
-        if (page == 0 && size == 0) {
-            return this.companies;
-        }
-        return this.companies.subList((page - 1) * size, page * size);
+    @GetMapping(params = {"page", "pageSize"})
+    List<Company> getCompaniesByPageAndSize(int page, int pageSize) {
+        return this.companies.subList((page - 1) * pageSize, page * pageSize);
     }
 
     @PostMapping
@@ -63,6 +66,7 @@ public class CompanyController {
         Company oldCompany = this.companies.stream()
                 .filter(company -> company.getId().equals(newCompany.getId()))
                 .findFirst().orElse(null);
+        //todo
         if (oldCompany == null) {
             return "fail";
         }
@@ -77,6 +81,7 @@ public class CompanyController {
                 .filter(company -> company.getId().equals(id))
                 .findFirst()
                 .orElse(null);
+        //todo
         if (foundCompany != null) {
             foundCompany.setEmployees(null);
             return "success";
