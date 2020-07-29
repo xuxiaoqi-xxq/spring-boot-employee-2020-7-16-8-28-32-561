@@ -13,4 +13,8 @@ public class EmployeeRepository {
     public List<Employee> findAllEmployees() {
         return null;
     }
+
+    public List<Employee> findEmployeesByPageAndPageSize() {
+        return null;
+    }
 }
