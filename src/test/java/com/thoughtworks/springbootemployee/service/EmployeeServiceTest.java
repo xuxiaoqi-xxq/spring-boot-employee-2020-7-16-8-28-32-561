@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -69,7 +70,7 @@ public class EmployeeServiceTest {
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         Employee employee = new Employee(2, 19, "female", "eva", 1000);
-        given(employeeRepository.findById(2).orElse(null)).willReturn(employee);
+        given(employeeRepository.findById(2)).willReturn(Optional.of(employee));
         //when
         Employee employeeByID = employeeService.findEmployeeByID(2);
         //then
