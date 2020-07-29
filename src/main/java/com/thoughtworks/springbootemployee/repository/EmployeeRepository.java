@@ -13,11 +13,6 @@ public class EmployeeRepository {
     public EmployeeRepository() {
         employees.add(new Employee("1", 18, "female", "eva", 10000));
         employees.add(new Employee("3", 24, "male", "gradle", 12000));
-        employees.add(new Employee("2", 24, "male", "java", 15000));
-        employees.add(new Employee("4", 24, "male", "java", 15000));
-        employees.add(new Employee("5", 24, "male", "java", 15000));
-        employees.add(new Employee("6", 24, "male", "java", 15000));
-        employees.add(new Employee("7", 24, "male", "java", 15000));
     }
 
     public List<Employee> findAllEmployees() {
@@ -30,6 +25,6 @@ public class EmployeeRepository {
 
 
     public List<Employee> findEmployeesByPageAndPageSize(int page, int pageSize) {
-        return null;
+        return this.employees.subList((page - 1) * pageSize, page * pageSize);
     }
 }

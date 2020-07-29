@@ -18,27 +18,29 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-
+        List<Employee> employees = Arrays.asList(new Employee("1", 18, "female", "eva", 10000),
+                new Employee("3", 24, "male", "gradle", 12000));
+        given(employeeRepository.findAllEmployees()).willReturn(employees);
         //when
         List<Employee> foundEmployees = employeeService.findAll();
 
         //then
-        assertEquals(foundEmployees, employeeRepository.findAllEmployees());
+        assertEquals(foundEmployees, employees);
     }
 
     @Test
     void should_get_page_employees_when_get_by_page_given_page_pageSize() {
         //given
-        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeRepository employeeRepository = new EmployeeRepository();
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        List<Employee> employees = Arrays.asList(new Employee("1", 18, "female", "eva", 1000),
-                new Employee("2", 19, "male", "eva", 1000));
-        given(employeeRepository.findEmployeesByPageAndPageSize(1,2)).willReturn(employees);
+//        List<Employee> employees = Arrays.asList(new Employee("1", 18, "female", "eva", 1000),
+//                new Employee("2", 19, "male", "eva", 1000));
+//        given(employeeRepository.findEmployeesByPageAndPageSize(1,2)).willReturn(employees);
         //when
         List<Employee> employeesByPageAndPageSize = employeeService.findEmployeesByPageAndPageSize(1, 2);
 
         //then
-        assertEquals(employees.subList(0, 2), employeesByPageAndPageSize);
+        assertEquals(employeeRepository, employeesByPageAndPageSize);
     }
 
     @Test
