@@ -25,7 +25,7 @@ public class EmployeeServiceTest {
         List<Employee> foundEmployees = employeeService.findAll();
 
         //then
-        assertEquals(foundEmployees, employees);
+        assertEquals(employees,foundEmployees);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class EmployeeServiceTest {
         List<Employee> employeesByPageAndPageSize = employeeService.findEmployeesByPageAndPageSize(1, 2);
 
         //then
-        assertEquals(employeesByPageAndPageSize,employees);
+        assertEquals(employees,employeesByPageAndPageSize);
     }
 
     @Test
@@ -55,7 +55,20 @@ public class EmployeeServiceTest {
         //when
         List<Employee> employeesByGender = employeeService.findEmployeesByGender("female");
         //then
-        assertEquals(employeesByGender,employees);
+        assertEquals(employees,employeesByGender);
+    }
+
+    @Test
+    void should_return_specific_employee_when_findById_given_id() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        Employee employee = new Employee("2", 19, "female", "eva", 1000);
+        given(employeeRepository.findEmployeeByID("2")).willReturn(employee);
+        //when
+        Employee employeeByID = employeeService.findEmployeeByID("2");
+        //then
+        assertEquals(employee,employeeByID);
     }
 
     @Test
