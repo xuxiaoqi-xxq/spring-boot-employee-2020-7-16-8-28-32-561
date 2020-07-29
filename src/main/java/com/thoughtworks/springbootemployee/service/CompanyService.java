@@ -28,6 +28,6 @@ public class CompanyService {
     }
 
     public List<Company> findCompaniesByPageAndPageSize(int page, int pageSize) {
-        return null;
+        return this.companyRepository.findCompaniesByPageAndPageSize(page,pageSize);
     }
 }

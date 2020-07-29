@@ -73,4 +73,8 @@ public class CompanyServiceTest {
         //then
         assertEquals(companies, companiesByPageAndPageSize);
     }
+
+
+
+
 }
