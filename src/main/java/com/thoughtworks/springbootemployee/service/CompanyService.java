@@ -35,7 +35,13 @@ public class CompanyService {
         return this.companyRepository.addCompany(company);
     }
 
-    public Company updateCompany(int companyID, Company company) {
-        return null;
+    public Company updateCompany(int companyID, Company newCompany) {
+        Company company = this.companyRepository.findCompanyByID(companyID);
+        if(newCompany!=null){
+            if(newCompany.getName()!=null){
+                company.setName(newCompany.getName());
+            }
+        }
+        return company;
     }
 }
