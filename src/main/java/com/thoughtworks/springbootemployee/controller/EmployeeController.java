@@ -60,7 +60,6 @@ public class EmployeeController {
         Employee oldEmployee = this.employees.stream()
                 .filter(employee -> employee.getId().equals(newEmployee.getId()))
                 .findFirst().orElse(null);
-        //todo
         if (oldEmployee == null) {
             return "fail";
         }
@@ -75,7 +74,6 @@ public class EmployeeController {
                 .filter(company -> company.getId().equals(id))
                 .findFirst()
                 .orElse(null);
-        //todo
         if (foundEmployee != null) {
             this.employees.remove(foundEmployee);
             return "success";
