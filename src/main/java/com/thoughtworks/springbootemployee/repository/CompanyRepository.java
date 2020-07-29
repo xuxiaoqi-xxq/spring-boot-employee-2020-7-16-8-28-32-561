@@ -10,7 +10,7 @@ public class CompanyRepository {
         return null;
     }
 
-    public Company findCompanyByID(String companyID) {
+    public Company findCompanyByID(Integer companyID) {
         return null;
     }
 
@@ -23,6 +23,10 @@ public class CompanyRepository {
     }
 
     public Company addCompany(Company company) {
+        return null;
+    }
+
+    public Company updateCompany(Company company) {
         return null;
     }
 }

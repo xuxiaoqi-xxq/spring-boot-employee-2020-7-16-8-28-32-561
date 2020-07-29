@@ -19,7 +19,7 @@ public class CompanyService {
         return this.companyRepository.findAllCompanies();
     }
 
-    public Company findCompanyByID(String companyID) {
+    public Company findCompanyByID(Integer companyID) {
         return this.companyRepository.findCompanyByID(companyID);
     }
 
@@ -33,5 +33,9 @@ public class CompanyService {
 
     public Company addCompany(Company company) {
         return this.companyRepository.addCompany(company);
+    }
+
+    public Company updateCompany(int companyID, Company company) {
+        return null;
     }
 }

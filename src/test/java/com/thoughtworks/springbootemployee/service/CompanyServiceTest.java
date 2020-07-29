@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.BDDMockito.given;
 
 public class CompanyServiceTest {
@@ -37,9 +38,9 @@ public class CompanyServiceTest {
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
         CompanyService companyService = new CompanyService(companyRepository);
         Company ooclCompany = new Company(1, "OOCL", null);
-        given(companyRepository.findCompanyByID("1")).willReturn(ooclCompany);
+        given(companyRepository.findCompanyByID(1)).willReturn(ooclCompany);
         //when
-        Company company = companyService.findCompanyByID("1");
+        Company company = companyService.findCompanyByID(1);
         //then
         assertEquals(ooclCompany,company);
     }
@@ -87,6 +88,23 @@ public class CompanyServiceTest {
 
         //then
         assertEquals(company, createdCompany);
+    }
+
+    @Test
+    void should_return_company_when_update_given_company() {
+        //given
+        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository);
+        given(companyRepository.findCompanyByID(1)).willReturn(new Company(1, "OOCL", null));
+        Company company = new Company(1, "CargoSmart", null);
+
+        //when
+        Company updatedCompany = companyService.updateCompany(1, company);
+
+        //then
+        assertEquals(1, updatedCompany.getId());
+        assertEquals("CargoSmart", updatedCompany.getName());
+        assertNull(updatedCompany.getEmployees());
     }
 
 
