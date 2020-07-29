@@ -36,12 +36,12 @@ public class EmployeeServiceTest {
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         List<Employee> employees = Arrays.asList(new Employee("1", 18, "female", "eva", 1000),
                 new Employee("2", 19, "male", "eva", 1000));
-        given(employeeRepository.findEmployeesByPageAndPageSize()).willReturn(employees);
+        given(employeeRepository.findEmployeesByPageAndPageSize(1,2)).willReturn(employees);
         //when
-        List<Employee> employeesByPageAndPageSize = employeeService.findEmployeesByPageAndPageSize(1,1);
+        List<Employee> employeesByPageAndPageSize = employeeService.findEmployeesByPageAndPageSize(1, 2);
 
         //then
-        assertEquals(employees.subList(0,1),employeesByPageAndPageSize);
+        assertEquals(employees.subList(0, 2), employeesByPageAndPageSize);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        given(employeeRepository.findEmployeeByID("1")).willReturn(new Employee("1",18,"female","chris",9999));
+        given(employeeRepository.findEmployeeByID("1")).willReturn(new Employee("1", 18, "female", "chris", 9999));
 
         //when
         Employee updatedEmployee = new Employee("1", 18, "female", "eva", 1000);

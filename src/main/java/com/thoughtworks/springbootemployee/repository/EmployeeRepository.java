@@ -14,7 +14,7 @@ public class EmployeeRepository {
         return null;
     }
 
-    public List<Employee> findEmployeesByPageAndPageSize() {
+    public List<Employee> findEmployeesByPageAndPageSize(int page, int pageSize) {
         return null;
     }
 }
