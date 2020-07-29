@@ -74,7 +74,20 @@ public class CompanyServiceTest {
         assertEquals(companies, companiesByPageAndPageSize);
     }
 
+    @Test
+    void should_return_company_when_add_given_company() {
+        //given
+        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(companyRepository);
+        Company company = new Company(1, "OOCL", null);
+        given(companyRepository.addCompany(company)).willReturn(company);
 
+        //when
+        Company createdCompany = companyService.addCompany(company);
+
+        //then
+        assertEquals(company, createdCompany);
+    }
 
 
 }

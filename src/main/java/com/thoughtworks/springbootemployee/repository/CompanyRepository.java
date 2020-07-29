@@ -21,4 +21,8 @@ public class CompanyRepository {
     public List<Company> findCompaniesByPageAndPageSize(int page, int pageSize) {
         return null;
     }
+
+    public Company addCompany(Company company) {
+        return null;
+    }
 }
