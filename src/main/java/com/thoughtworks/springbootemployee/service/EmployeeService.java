@@ -3,6 +3,8 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 
+import java.util.List;
+
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
@@ -18,5 +20,9 @@ public class EmployeeService {
         employee.setGender(updatedEmployee.getGender());
         employee.setSalary(updatedEmployee.getSalary());
         return employee;
+    }
+
+    public List<Employee> findAll() {
+        return this.employeeRepository.findAllEmployees();
     }
 }
