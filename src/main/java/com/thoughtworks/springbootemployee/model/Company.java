@@ -9,7 +9,7 @@ public class Company {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Employee> employees;
 
     public Company() {

@@ -2,89 +2,53 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.service.CompanyService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
 @RequestMapping("/companies")
 public class CompanyController {
-    private final List<Company> companies = new ArrayList<>();
+    private final CompanyService companyService;
 
-    public CompanyController() {
-        initCompanies();
-    }
-
-    private void initCompanies() {
-        Employee employee1 = new Employee(1, 18, "female", "eva", 10000);
-        Employee employee2 = new Employee(2, 24, "male", "java", 15000);
-        Employee employee3 = new Employee(3, 24, "male", "gradle", 12000);
-        companies.add(new Company(1, "OOCL", Collections.singletonList(employee1)));
-        companies.add(new Company(2, "ThoughtWorks", Arrays.asList(employee2, employee3)));
+    public CompanyController(CompanyService companyService) {
+        this.companyService = companyService;
     }
 
     @GetMapping()
     List<Company> getCompanies() {
-        return this.companies;
+        return this.companyService.findAllCompanies();
     }
 
     @GetMapping("/{id}")
     Company getCompanyById(@PathVariable("id") Integer id) {
-        return companies.stream()
-                .filter(company -> company.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        return this.companyService.findCompanyByID(id);
     }
 
     @GetMapping("/{id}/employees")
     List<Employee> getEmployeesByCompanyId(@PathVariable("id") Integer id) {
-        return companies.stream()
-                .filter(company -> company.getId().equals(id))
-                .map(Company::getEmployees)
-                .findFirst()
-                //todo
-                .orElse(null);
+        return this.companyService.findEmployeesByCompanyID(id);
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    List<Company> getCompaniesByPageAndSize(int page, int pageSize) {
-        return this.companies.subList((page - 1) * pageSize, page * pageSize);
+    Page<Company> getCompaniesByPageAndSize(int page, int pageSize) {
+        return this.companyService.findCompaniesByPageAndPageSize(--page, pageSize);
     }
 
     @PostMapping
-    String addCompany(@RequestBody Company company) {
-        this.companies.add(company);
-        return "success";
+    Company addCompany(@RequestBody Company company) {
+        return this.companyService.addCompany(company);
     }
 
     @PutMapping("/{id}")
-    String updateCompany(@RequestBody Company newCompany, @PathVariable("id") Integer id) {
-        newCompany.setId(id);
-        Company oldCompany = this.companies.stream()
-                .filter(company -> company.getId().equals(newCompany.getId()))
-                .findFirst().orElse(null);
-        if (oldCompany == null) {
-            return "fail";
-        }
-        this.companies.remove(oldCompany);
-        this.companies.add(newCompany);
-        return "success";
+    Company updateCompany(@RequestBody Company newCompany, @PathVariable("id") Integer id) {
+        return this.companyService.updateCompany(id, newCompany);
     }
 
     @DeleteMapping("/{id}")
-    String deleteCompany(@PathVariable("id") Integer id) {
-        Company foundCompany = this.companies.stream()
-                .filter(company -> company.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-        if (foundCompany != null) {
-            foundCompany.setEmployees(null);
-            return "success";
-        } else {
-            return "fail";
-        }
+    void deleteCompany(@PathVariable("id") Integer id) {
+        this.companyService.deleteCompanyByID(id);
     }
 }

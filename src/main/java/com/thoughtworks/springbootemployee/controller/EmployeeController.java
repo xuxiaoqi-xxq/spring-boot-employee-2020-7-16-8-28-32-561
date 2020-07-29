@@ -27,7 +27,7 @@ public class EmployeeController {
 
     @GetMapping(params = {"page", "pageSize"})
     public Page<Employee> getAllEmployeesByPageAndSize(Integer page, Integer pageSize) {
-        return this.employeeService.findEmployeesByPageAndPageSize(++page,pageSize);
+        return this.employeeService.findEmployeesByPageAndPageSize(--page,pageSize);
     }
 
     @GetMapping(params = {"gender"})
