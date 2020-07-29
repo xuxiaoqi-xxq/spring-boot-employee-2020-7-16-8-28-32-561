@@ -66,7 +66,6 @@ public class CompanyController {
         Company oldCompany = this.companies.stream()
                 .filter(company -> company.getId().equals(newCompany.getId()))
                 .findFirst().orElse(null);
-        //todo
         if (oldCompany == null) {
             return "fail";
         }
@@ -81,7 +80,6 @@ public class CompanyController {
                 .filter(company -> company.getId().equals(id))
                 .findFirst()
                 .orElse(null);
-        //todo
         if (foundCompany != null) {
             foundCompany.setEmployees(null);
             return "success";
