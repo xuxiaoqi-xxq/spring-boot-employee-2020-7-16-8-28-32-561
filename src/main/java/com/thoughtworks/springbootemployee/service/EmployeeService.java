@@ -25,7 +25,7 @@ public class EmployeeService {
         if (employee == null) {
             throw new NoSuchDataException();
         }
-        if (!employee.getId().equals(employeeID)) {
+        if (!employee.getId().equals(updatedEmployee.getId())) {
             throw new IllegalOperationException();
         }
         BeanUtils.copyProperties(updatedEmployee, employee);
