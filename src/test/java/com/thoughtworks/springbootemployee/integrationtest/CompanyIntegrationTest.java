@@ -55,6 +55,36 @@ public class CompanyIntegrationTest {
         //then
     }
 
+
+    @Test
+    void should_return_specific_companies_when_hit_companies_endpoint_given_company() throws Exception {
+        //given
+        Company company = new Company(1, "oocw", null);
+        Company savedCompany = companyRepository.save(company);
+        //when
+        mockMvc.perform(get("/companies/" + savedCompany.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(savedCompany.getId()))
+                .andExpect(jsonPath("$.name").value("oocw"));
+    }
+
+    @Test
+    void should_return_employee_when_hit_companies_endpoint_given_company_id() throws Exception {
+        //given
+        List<Employee> employees = Arrays.asList(new Employee(1, 18, "male", "xxx", 1000),
+                new Employee(2, 18, "female", "xxx", 10000));
+        List<Employee> savedEmployees = employeeRepository.saveAll(employees);
+        Company company = new Company(1, "oocw", savedEmployees);
+        Company savedCompany = companyRepository.save(company);
+        System.out.println(savedCompany.getEmployees());
+        //when
+        //todo mapped=companyId 会拿不到列表
+        mockMvc.perform(get("/companies/" + savedCompany.getId() + "/employees"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].name").value("xxx"));
+    }
+
     @Test
     void should_page_companies_when_hit_companies_endpoint_given_page_and_pageSize() throws Exception {
         //given
@@ -86,33 +116,5 @@ public class CompanyIntegrationTest {
         assertEquals("gdsa", companies.get(0).getName());
     }
 
-    @Test
-    void should_return_specific_companies_when_hit_companies_endpoint_given_company() throws Exception {
-        //given
-        Company company = new Company(1, "oocw", null);
-        Company savedCompany = companyRepository.save(company);
-        //when
-        mockMvc.perform(get("/companies/" + savedCompany.getId()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(savedCompany.getId()))
-                .andExpect(jsonPath("$.name").value("oocw"));
-    }
-
-    @Test
-    void should_return_employee_when_hit_companies_endpoint_given_company_id() throws Exception {
-        //given
-        List<Employee> employees = Arrays.asList(new Employee(1, 18, "male", "xxx", 1000),
-                new Employee(2, 18, "female", "xxx", 10000));
-        List<Employee> savedEmployees = employeeRepository.saveAll(employees);
-        Company company = new Company(1, "oocw", savedEmployees);
-        Company savedCompany = companyRepository.save(company);
-        System.out.println(savedCompany.getEmployees());
-        //when
-        //todo mapped=companyId 会拿不到列表
-        mockMvc.perform(get("/companies/" + savedCompany.getId() + "/employees"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].name").value("xxx"));
-    }
 
 }
