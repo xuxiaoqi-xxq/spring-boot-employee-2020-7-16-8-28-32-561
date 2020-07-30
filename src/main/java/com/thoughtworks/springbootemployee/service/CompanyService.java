@@ -55,8 +55,11 @@ public class CompanyService {
     }
 
     public void deleteCompanyByID(int companyID) {
-        List<Employee> employees = this.companyRepository.findById(companyID).orElse(null).getEmployees();
+        Company company = this.companyRepository.findById(companyID).orElse(null);
+        List<Employee> employees = company != null ? company.getEmployees() : null;
         this.companyRepository.deleteById(companyID);
-        this.employeeRepository.deleteAll(employees);
+        if (employees != null) {
+            this.employeeRepository.deleteAll(employees);
+        }
     }
 }
