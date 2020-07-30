@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 public class EmployeeServiceTest {
@@ -110,6 +111,22 @@ public class EmployeeServiceTest {
         assertEquals("eva", employee.getName());
         assertEquals("female", employee.getGender());
         assertEquals(1000, employee.getSalary());
+    }
+
+    @Test
+    void should_throw_NoSuchDataException_when_update_given_wrong_employee_id() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        given(employeeRepository.findById(2)).willReturn(Optional.of(new Employee(2, 18, "female", "chris", 9999)));
+
+        //when
+        Employee updatedEmployee = new Employee(2, 18, "female", "eva", 1000);
+
+        //then
+        assertThrows(NoSuchDataException.class, () -> employeeService.update(2, updatedEmployee));
+
+//        assertEquals(NoSuchDataException.class,noSuchDataException.getClass());
     }
 
     @Test
