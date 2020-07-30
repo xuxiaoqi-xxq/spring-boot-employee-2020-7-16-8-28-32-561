@@ -38,15 +38,19 @@ public class EmployeeService {
     }
 
     public Page<Employee> findEmployeesByPageAndPageSize(int page, int pageSize) {
-        return this.employeeRepository.findAll(PageRequest.of(page,pageSize));
+        return this.employeeRepository.findAll(PageRequest.of(page, pageSize));
     }
 
     public List<Employee> findEmployeesByGender(String gender) {
         return this.employeeRepository.findAllByGender(gender);
     }
 
-    public Employee findEmployeeByID(Integer employeeID) {
-        return this.employeeRepository.findById(employeeID).orElse(null);
+    public Employee findEmployeeByID(Integer employeeID) throws NoSuchDataException {
+        Employee foundEmployee = this.employeeRepository.findById(employeeID).orElse(null);
+        if (foundEmployee == null) {
+            throw new NoSuchDataException();
+        }
+        return foundEmployee;
     }
 
     public Employee addEmployee(Employee employee) {

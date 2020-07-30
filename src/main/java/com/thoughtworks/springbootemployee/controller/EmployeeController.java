@@ -37,7 +37,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployee(@PathVariable("id") Integer id) {
+    public Employee getEmployee(@PathVariable("id") Integer id) throws NoSuchDataException {
         return this.employeeService.findEmployeeByID(id);
     }
 
