@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -148,5 +149,16 @@ public class EmployeeIntegrationTest {
         assertEquals("male", employee.getGender());
     }
 
+
+    @Test
+    void should_return_void_when_hit_employees_endpoint_given_employee_id() throws Exception {
+        //given
+        Employee saveEmployee = employeeRepository.save(new Employee(1, 18, "female", "xxx", 10000));
+
+        mockMvc.perform(delete("/employees/" + saveEmployee.getId()))
+                .andExpect(status().isOk());
+
+        assertNull(employeeRepository.findById(saveEmployee.getId()).orElse(null));
+    }
 
 }
