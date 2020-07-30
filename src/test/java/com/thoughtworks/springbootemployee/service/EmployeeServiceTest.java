@@ -68,7 +68,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_specific_employee_when_findById_given_id() {
+    void should_return_specific_employee_when_findById_given_id() throws NoSuchDataException {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);

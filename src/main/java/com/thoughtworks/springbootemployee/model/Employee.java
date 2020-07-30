@@ -17,16 +17,14 @@ public class Employee {
     private Integer salary;
 
 
-    public Employee(Integer id, Integer age, String gender, String name, Integer salary) {
-        this.id = id;
+    public Employee(Integer age, String gender, String name, Integer salary) {
         this.age = age;
         this.gender = gender;
         this.name = name;
         this.salary = salary;
     }
 
-    public Employee(Integer id, Integer companyId, Integer age, String gender, String name, Integer salary) {
-        this.id = id;
+    public Employee(Integer companyId, Integer age, String gender, String name, Integer salary) {
         this.companyId = companyId;
         this.age = age;
         this.gender = gender;
