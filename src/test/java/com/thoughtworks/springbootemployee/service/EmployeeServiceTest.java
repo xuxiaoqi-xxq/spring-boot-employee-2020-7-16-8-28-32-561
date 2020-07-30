@@ -4,6 +4,8 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.Arrays;
@@ -12,7 +14,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 public class EmployeeServiceTest {
 
@@ -37,16 +38,16 @@ public class EmployeeServiceTest {
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         //todo
-//        List<Employee> employees = Arrays.asList(new Employee(1, 18, "female", "eva", 1000),
-//                new Employee(1, 19, "male", "eva", 1000));
-//        given(employeeRepository.findAll(PageRequest.of(1,2))).willReturn((Page<Employee>) employees);
+        Page<Employee> employees = new PageImpl<>(Arrays.asList(new Employee(1, 18, "female", "eva", 1000),
+                new Employee(1, 19, "male", "eva", 1000)));
+        given(employeeRepository.findAll(PageRequest.of(1, 2))).willReturn(employees);
 
         //when
-        employeeService.findEmployeesByPageAndPageSize(1, 2);
+        Page<Employee> employeesByPageAndPageSize = employeeService.findEmployeesByPageAndPageSize(1, 2);
 
         //then
-        //assertEquals(employees, employeesByPageAndPageSize);
-        verify(employeeRepository).findAll(PageRequest.of(1,2));
+        assertEquals(employees, employeesByPageAndPageSize);
+        //verify(employeeRepository).findAll(PageRequest.of(1,2));
     }
 
     @Test
@@ -114,6 +115,7 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
+
         //when
         employeeService.deleteEmployeeByID(1);
 

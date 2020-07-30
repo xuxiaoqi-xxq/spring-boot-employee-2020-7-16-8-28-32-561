@@ -55,11 +55,11 @@ public class CompanyService {
     }
 
     public void deleteCompanyByID(int companyID) {
-        Company company = this.companyRepository.findById(companyID).orElse(null);
-        List<Employee> employees = company != null ? company.getEmployees() : null;
+//        Company company = this.companyRepository.findById(companyID).orElse(null);
+//        List<Employee> employees = company != null ? company.getEmployees() : null;
         this.companyRepository.deleteById(companyID);
-        if (employees != null) {
-            this.employeeRepository.deleteAll(employees);
-        }
+//        if (employees != null) {
+//            this.employeeRepository.deleteAll(employees);
+//        }
     }
 }
