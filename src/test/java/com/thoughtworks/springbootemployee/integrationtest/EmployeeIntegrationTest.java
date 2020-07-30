@@ -1,7 +1,6 @@
 package com.thoughtworks.springbootemployee.integrationtest;
 
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -29,8 +28,6 @@ public class EmployeeIntegrationTest {
     private MockMvc mockMvc;
     @Autowired
     private EmployeeRepository employeeRepository;
-    @Autowired
-    private CompanyRepository companyRepository;
 
     @AfterEach
     void tearDown() {
@@ -51,7 +48,6 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[0].age").value(18))
                 .andExpect(jsonPath("$[0].salary").value(1000))
                 .andExpect(jsonPath("$[0].gender").value("male"));
-
     }
 
     @Test
