@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -15,7 +16,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,21 +36,6 @@ public class EmployeeIntegrationTest {
     void tearDown() {
         employeeRepository.deleteAll();
     }
-
-    @Test
-    void should_specific_employees_when_hit_employees_endpoint_given_employee_id() throws Exception {
-        //given
-        Employee savedEmployee = employeeRepository.save(new Employee(1, 18, "female", "xxx", 10000));
-
-        mockMvc.perform(get("/employees/" + savedEmployee.getId()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("xxx"))
-                .andExpect(jsonPath("$.age").value(18))
-                .andExpect(jsonPath("$.salary").value(10000))
-                .andExpect(jsonPath("$.gender").value("female"));
-    }
-
 
     @Test
     void should_return_all_employees_when_hit_employees_endpoint_given_nothing() throws Exception {
@@ -97,6 +85,42 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[0].age").value(18))
                 .andExpect(jsonPath("$[0].salary").value(10000))
                 .andExpect(jsonPath("$[0].gender").value("female"));
+    }
+
+    @Test
+    void should_specific_employees_when_hit_employees_endpoint_given_employee_id() throws Exception {
+        //given
+        Employee savedEmployee = employeeRepository.save(new Employee(1, 18, "female", "xxx", 10000));
+
+        mockMvc.perform(get("/employees/" + savedEmployee.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value("xxx"))
+                .andExpect(jsonPath("$.age").value(18))
+                .andExpect(jsonPath("$.salary").value(10000))
+                .andExpect(jsonPath("$.gender").value("female"));
+    }
+
+    @Test
+    void should_add_employee_when_hit_employees_endpoint_given_employee() throws Exception {
+        //given
+        String createEmployee = "{\n" +
+                "    \"gender\":\"female\",\n" +
+                "    \"name\":\"xxx\",\n" +
+                "    \"age\":18,\n" +
+                "    \"salary\":10000\n" +
+                "}";
+
+        mockMvc.perform(post("/employees").contentType(MediaType.APPLICATION_JSON).content(createEmployee))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value("xxx"))
+                .andExpect(jsonPath("$.age").value(18))
+                .andExpect(jsonPath("$.salary").value(10000))
+                .andExpect(jsonPath("$.gender").value("female"));
+
+        List<Employee> employees = employeeRepository.findAll();
+        assertEquals(1, employees.size());
     }
 
 
