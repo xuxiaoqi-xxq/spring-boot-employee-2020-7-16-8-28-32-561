@@ -1,7 +1,9 @@
 package com.thoughtworks.springbootemployee.integrationtest;
 
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,6 +32,9 @@ public class CompanyIntegrationTest {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @AfterEach
     void tearDown() {
@@ -92,5 +98,21 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.name").value("oocw"));
     }
 
+    @Test
+    void should_return_employee_when_hit_companies_endpoint_given_company_id() throws Exception {
+        //given
+        List<Employee> employees = Arrays.asList(new Employee(1, 18, "male", "xxx", 1000),
+                new Employee(2, 18, "female", "xxx", 10000));
+        List<Employee> savedEmployees = employeeRepository.saveAll(employees);
+        Company company = new Company(1, "oocw", savedEmployees);
+        Company savedCompany = companyRepository.save(company);
+        System.out.println(savedCompany.getEmployees());
+        //when
+        //todo mapped=companyId 会拿不到列表
+        mockMvc.perform(get("/companies/" + savedCompany.getId() + "/employees"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].name").value("xxx"));
+    }
 
 }

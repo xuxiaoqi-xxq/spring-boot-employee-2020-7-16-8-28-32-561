@@ -9,7 +9,7 @@ public class Company {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    @OneToMany(cascade = {CascadeType.REMOVE}, mappedBy = "companyId")
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<Employee> employees;
 
     public Company() {
