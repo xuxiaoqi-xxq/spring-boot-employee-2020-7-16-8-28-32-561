@@ -1,7 +1,10 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -17,12 +20,15 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public Employee update(Integer employeeID, Employee updatedEmployee) {
+    public Employee update(Integer employeeID, Employee updatedEmployee) throws IllegalOperationException, NoSuchDataException {
         Employee employee = employeeRepository.findById(employeeID).orElse(null);
-        employee.setName(updatedEmployee.getName());
-        employee.setAge(updatedEmployee.getAge());
-        employee.setGender(updatedEmployee.getGender());
-        employee.setSalary(updatedEmployee.getSalary());
+        if (employee == null) {
+            throw new NoSuchDataException();
+        }
+        if (!employee.getId().equals(employeeID)) {
+            throw new IllegalOperationException();
+        }
+        BeanUtils.copyProperties(updatedEmployee, employee);
         this.employeeRepository.save(employee);
         return employee;
     }

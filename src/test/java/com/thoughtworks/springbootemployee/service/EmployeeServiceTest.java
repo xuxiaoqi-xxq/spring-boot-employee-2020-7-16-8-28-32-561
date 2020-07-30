@@ -1,5 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -93,15 +95,15 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_update_employee_when_update_given_employee() {
+    void should_update_employee_when_update_given_employee() throws NoSuchDataException, IllegalOperationException {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        given(employeeRepository.findById(1)).willReturn(Optional.of(new Employee(2, 18, "female", "chris", 9999)));
+        given(employeeRepository.findById(2)).willReturn(Optional.of(new Employee(2, 18, "female", "chris", 9999)));
 
         //when
         Employee updatedEmployee = new Employee(2, 18, "female", "eva", 1000);
-        Employee employee = employeeService.update(1, updatedEmployee);
+        Employee employee = employeeService.update(2, updatedEmployee);
 
         //then
         assertEquals(2, employee.getId());

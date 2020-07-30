@@ -1,10 +1,11 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -47,8 +48,8 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    Employee updateEmployee(@RequestBody Employee newEmployee, @PathVariable("id") Integer id) {
-        return this.employeeService.update(id,newEmployee);
+    Employee updateEmployee(@RequestBody Employee newEmployee, @PathVariable("id") Integer id) throws NoSuchDataException, IllegalOperationException {
+        return this.employeeService.update(id, newEmployee);
     }
 
     @DeleteMapping("/{id}")
