@@ -125,8 +125,20 @@ public class EmployeeServiceTest {
 
         //then
         assertThrows(NoSuchDataException.class, () -> employeeService.update(2, updatedEmployee));
+    }
 
-//        assertEquals(NoSuchDataException.class,noSuchDataException.getClass());
+    @Test
+    void should_throw_IllegalOperationException_when_update_given_diff_employee_id() {
+        //given
+        EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        given(employeeRepository.findById(2)).willReturn(Optional.of(new Employee(2, 18, "female", "chris", 9999)));
+
+        //when
+        Employee updatedEmployee = new Employee(1, 18, "female", "eva", 1000);
+
+        //then
+        assertThrows(IllegalOperationException.class, () -> employeeService.update(2, updatedEmployee));
     }
 
     @Test
