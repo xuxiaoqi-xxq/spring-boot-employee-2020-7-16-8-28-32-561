@@ -80,4 +80,17 @@ public class CompanyIntegrationTest {
         assertEquals("gdsa", companies.get(0).getName());
     }
 
+    @Test
+    void should_return_specific_companies_when_hit_companies_endpoint_given_company() throws Exception {
+        //given
+        Company company = new Company(1, "oocw", null);
+        Company savedCompany = companyRepository.save(company);
+        //when
+        mockMvc.perform(get("/companies/" + savedCompany.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(savedCompany.getId()))
+                .andExpect(jsonPath("$.name").value("oocw"));
+    }
+
+
 }
