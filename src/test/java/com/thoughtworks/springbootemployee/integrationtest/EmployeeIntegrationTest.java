@@ -17,8 +17,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -121,6 +120,32 @@ public class EmployeeIntegrationTest {
 
         List<Employee> employees = employeeRepository.findAll();
         assertEquals(1, employees.size());
+    }
+
+    @Test
+    void should_return_updated_employee_when_hit_employees_endpoint_given_new_employee() throws Exception {
+        //given
+        Employee saveEmployee = employeeRepository.save(new Employee(1, 18, "female", "xxx", 10000));
+        String updateEmployee = "{\n" +
+                "    \"id\":" + saveEmployee.getId() + ",\n" +
+                "    \"gender\":\"male\",\n" +
+                "    \"name\":\"xxxx\",\n" +
+                "    \"age\":18,\n" +
+                "    \"salary\":1000\n" +
+                "}";
+
+        mockMvc.perform(put("/employees/" + saveEmployee.getId()).contentType(MediaType.APPLICATION_JSON).content(updateEmployee))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value("xxxx"))
+                .andExpect(jsonPath("$.age").value(18))
+                .andExpect(jsonPath("$.salary").value(1000))
+                .andExpect(jsonPath("$.gender").value("male"));
+
+        Employee employee = employeeRepository.findById(saveEmployee.getId()).orElse(null);
+        assertEquals("xxxx", employee.getName());
+        assertEquals(1000, employee.getSalary());
+        assertEquals("male", employee.getGender());
     }
 
 
