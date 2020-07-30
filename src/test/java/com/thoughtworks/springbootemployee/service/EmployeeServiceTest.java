@@ -118,7 +118,7 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = Mockito.mock(EmployeeRepository.class);
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        given(employeeRepository.findById(2)).willReturn(Optional.of(new Employee(2, 18, "female", "chris", 9999)));
+        given(employeeRepository.findById(1)).willReturn(Optional.of(new Employee(2, 18, "female", "chris", 9999)));
 
         //when
         Employee updatedEmployee = new Employee(2, 18, "female", "eva", 1000);
