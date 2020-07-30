@@ -127,6 +127,5 @@ public class CompanyServiceTest {
 
         //then
         verify(companyRepository).deleteById(1);
-//        verify(employeeRepository).deleteAll(any());
     }
 }
