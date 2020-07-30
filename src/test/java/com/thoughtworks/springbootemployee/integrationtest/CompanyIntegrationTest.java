@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,6 +39,7 @@ public class CompanyIntegrationTest {
     @AfterEach
     void tearDown() {
         companyRepository.deleteAll();
+        employeeRepository.deleteAll();
     }
 
     @Test
@@ -135,4 +137,16 @@ public class CompanyIntegrationTest {
     }
 
 
+    @Test
+    void should_return_void_when_hit_companies_endpoint_given_company_id() throws Exception {
+        //given
+        Company company = new Company(1, "oocw", null);
+        Company savedCompany = companyRepository.save(company);
+
+        //when
+        mockMvc.perform(delete("/companies/" + savedCompany.getId()))
+                .andExpect(status().isOk());
+        //then
+        assertNull(companyRepository.findById(savedCompany.getId()).orElse(null));
+    }
 }
