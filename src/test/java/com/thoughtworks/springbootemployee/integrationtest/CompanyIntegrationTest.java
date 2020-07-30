@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.integrationtest;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,6 +27,11 @@ public class CompanyIntegrationTest {
     @Autowired
     private CompanyRepository companyRepository;
 
+    @AfterEach
+    void tearDown() {
+        companyRepository.deleteAll();
+    }
+
     @Test
     void should_return_companies_when_hit_companies_endpoint_given_nothing() throws Exception {
         //given
@@ -39,4 +45,19 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$[0].name").value("oocl"));
         //then
     }
+
+    @Test
+    void should_page_companies_when_hit_companies_endpoint_given_page_and_pageSize() throws Exception {
+        //given
+        List<Company> companies = Collections.singletonList(new Company(1, "oocl", null));
+        companyRepository.saveAll(companies);
+        //when
+        mockMvc.perform(get("/companies?page=1&pageSize=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].id").isNumber())
+                .andExpect(jsonPath("$.content[0].name").value("oocl"));
+        //then
+    }
+
 }
