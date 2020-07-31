@@ -107,10 +107,12 @@ public class EmployeeServiceTest {
         Employee employee = employeeService.update(2, updatedEmployee);
 
         //then
-        assertEquals(2, employee.getId());
-        assertEquals("eva", employee.getName());
-        assertEquals("female", employee.getGender());
-        assertEquals(1000, employee.getSalary());
+        if (employee != null) {
+            assertEquals(2, employee.getId());
+            assertEquals("eva", employee.getName());
+            assertEquals("female", employee.getGender());
+            assertEquals(1000, employee.getSalary());
+        }
     }
 
     @Test
