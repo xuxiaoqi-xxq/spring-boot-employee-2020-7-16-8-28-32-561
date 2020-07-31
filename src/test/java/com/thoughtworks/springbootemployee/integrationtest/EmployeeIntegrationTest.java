@@ -37,17 +37,18 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_all_employees_when_hit_employees_endpoint_given_nothing() throws Exception {
         //given
-        List<Employee> employees = Arrays.asList(new Employee(1, 18, "male", "xxx", 1000));
+        List<Employee> employees = Collections.singletonList(new Employee(1, 18, "male", "xxx", 1000));
         employeeRepository.saveAll(employees);
 
         mockMvc.perform(get("/employees"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id").isNumber())
-                .andExpect(jsonPath("$[0].name").value("xxx"))
-                .andExpect(jsonPath("$[0].age").value(18))
-                .andExpect(jsonPath("$[0].salary").value(1000))
-                .andExpect(jsonPath("$[0].gender").value("male"));
+                //todo
+                .andExpect(jsonPath("$[0].name").value(employees.get(0).getName()))
+                .andExpect(jsonPath("$[0].age").value(employees.get(0).getAge()))
+                .andExpect(jsonPath("$[0].salary").value(employees.get(0).getSalary()))
+                .andExpect(jsonPath("$[0].gender").value(employees.get(0).getGender()));
     }
 
     @Test
@@ -60,10 +61,10 @@ public class EmployeeIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)))
                 .andExpect(jsonPath("$.content[0].id").isNumber())
-                .andExpect(jsonPath("$.content[0].name").value("xxx"))
-                .andExpect(jsonPath("$.content[0].age").value(18))
-                .andExpect(jsonPath("$.content[0].salary").value(1000))
-                .andExpect(jsonPath("$.content[0].gender").value("male"));
+                .andExpect(jsonPath("$.content[0].name").value(employees.get(0).getName()))
+                .andExpect(jsonPath("$.content[0].age").value(employees.get(0).getAge()))
+                .andExpect(jsonPath("$.content[0].salary").value(employees.get(0).getSalary()))
+                .andExpect(jsonPath("$.content[0].gender").value(employees.get(0).getGender()));
     }
 
     @Test
@@ -77,10 +78,10 @@ public class EmployeeIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id").isNumber())
-                .andExpect(jsonPath("$[0].name").value("xxx"))
-                .andExpect(jsonPath("$[0].age").value(18))
-                .andExpect(jsonPath("$[0].salary").value(10000))
-                .andExpect(jsonPath("$[0].gender").value("female"));
+                .andExpect(jsonPath("$[0].name").value(employees.get(0).getName()))
+                .andExpect(jsonPath("$[0].age").value(employees.get(0).getAge()))
+                .andExpect(jsonPath("$[0].salary").value(employees.get(0).getSalary()))
+                .andExpect(jsonPath("$[0].gender").value(employees.get(0).getGender()));
     }
 
     @Test
@@ -91,10 +92,10 @@ public class EmployeeIntegrationTest {
         mockMvc.perform(get("/employees/" + savedEmployee.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("xxx"))
-                .andExpect(jsonPath("$.age").value(18))
-                .andExpect(jsonPath("$.salary").value(10000))
-                .andExpect(jsonPath("$.gender").value("female"));
+                .andExpect(jsonPath("$.name").value(savedEmployee.getName()))
+                .andExpect(jsonPath("$.age").value(savedEmployee.getAge()))
+                .andExpect(jsonPath("$.salary").value(savedEmployee.getSalary()))
+                .andExpect(jsonPath("$.gender").value(savedEmployee.getGender()));
     }
 
     @Test
@@ -140,6 +141,7 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.gender").value("male"));
 
         Employee employee = employeeRepository.findById(saveEmployee.getId()).orElse(null);
+        //todo
         assertEquals("xxxx", employee.getName());
         assertEquals(1000, employee.getSalary());
         assertEquals("male", employee.getGender());
