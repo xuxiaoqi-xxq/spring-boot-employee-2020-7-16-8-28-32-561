@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -30,12 +31,17 @@ public class CompanyService {
         return this.companyRepository.findById(companyID).orElse(null);
     }
 
-    public List<Employee> findEmployeesByCompanyID(Integer companyID) {
-        return this.companyRepository.findById(companyID).orElse(null).getEmployees();
+    public List<Employee> findEmployeesByCompanyID(Integer companyID) throws NoSuchDataException {
+
+        Company company = this.companyRepository.findById(companyID).orElse(null);
+        if (company == null) {
+            throw new NoSuchDataException();
+        }
+        return company.getEmployees();
     }
 
     public Page<Company> findCompaniesByPageAndPageSize(int page, int pageSize) {
-        return this.companyRepository.findAll(PageRequest.of(page,pageSize));
+        return this.companyRepository.findAll(PageRequest.of(page, pageSize));
     }
 
     public Company addCompany(Company company) {

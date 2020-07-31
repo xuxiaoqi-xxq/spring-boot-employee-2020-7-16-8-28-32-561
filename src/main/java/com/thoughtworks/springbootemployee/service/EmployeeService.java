@@ -29,8 +29,7 @@ public class EmployeeService {
             throw new IllegalOperationException();
         }
         BeanUtils.copyProperties(updatedEmployee, employee);
-        this.employeeRepository.save(employee);
-        return employee;
+        return this.employeeRepository.save(employee);
     }
 
     public List<Employee> findAll() {

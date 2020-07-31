@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -51,7 +52,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_employees_when_find_employees_given_company_id() {
+    void should_return_employees_when_find_employees_given_company_id() throws NoSuchDataException {
         //given
         CompanyRepository companyRepository = mock(CompanyRepository.class);
         CompanyService companyService = new CompanyService(companyRepository, null);

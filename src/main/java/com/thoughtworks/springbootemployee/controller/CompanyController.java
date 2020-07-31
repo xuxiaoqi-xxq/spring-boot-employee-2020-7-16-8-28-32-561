@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
@@ -29,7 +30,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}/employees")
-    List<Employee> getEmployeesByCompanyId(@PathVariable("id") Integer id) {
+    List<Employee> getEmployeesByCompanyId(@PathVariable("id") Integer id) throws NoSuchDataException {
         return this.companyService.findEmployeesByCompanyID(id);
     }
 
